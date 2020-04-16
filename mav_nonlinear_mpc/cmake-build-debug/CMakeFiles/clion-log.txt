@@ -1,0 +1,45 @@
+/home/alg/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/192.6817.32/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/alg/ethz_mpc_ws/src/mav_control_rw/mav_nonlinear_mpc
+CMake Warning at cmake/FindOpenBLAS.cmake:34 (message):
+  Openblas not found.  Please try specifying Openblas_ROOT
+Call Stack (most recent call first):
+  CMakeLists.txt:9 (find_package)
+
+
+-- Openblas not found, trying to use lapacke
+-- A library with LAPACK API found.
+-- Using CATKIN_DEVEL_PREFIX: /home/alg/ethz_mpc_ws/src/mav_control_rw/mav_nonlinear_mpc/cmake-build-debug/devel
+-- Using CMAKE_PREFIX_PATH: /home/alg/ethz_mpc_ws/devel;/home/alg/freeflyer_build/native/devel;/opt/ros/kinetic;/home/alg/freeflyer/cmake
+-- This workspace overlays: /home/alg/ethz_mpc_ws/devel;/home/alg/freeflyer_build/native/devel;/opt/ros/kinetic
+-- Found PythonInterp: /usr/bin/python2 (found suitable version "2.7.12", minimum required is "2") 
+-- Using PYTHON_EXECUTABLE: /usr/bin/python2
+-- Using Debian Python package layout
+-- Using empy: /usr/bin/empy
+-- Using CATKIN_ENABLE_TESTING: ON
+-- Call enable_testing()
+-- Using CATKIN_TEST_RESULTS_DIR: /home/alg/ethz_mpc_ws/src/mav_control_rw/mav_nonlinear_mpc/cmake-build-debug/test_results
+-- Found gtest sources under '/usr/src/gmock': gtests will be built
+-- Found gmock sources under '/usr/src/gmock': gmock will be built
+-- Found PythonInterp: /usr/bin/python2 (found version "2.7.12") 
+-- Using Python nosetests: /usr/bin/nosetests-2.7
+-- catkin 0.7.20
+-- BUILD_SHARED_LIBS is on
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+CMake Warning at /opt/ros/kinetic/share/cmake_modules/cmake/Modules/FindEigen.cmake:62 (message):
+  The FindEigen.cmake Module in the cmake_modules package is deprecated.
+
+  Please use the FindEigen3.cmake Module provided with Eigen.  Change
+  instances of find_package(Eigen) to find_package(Eigen3).  Check the
+  FindEigen3.cmake Module for the resulting CMake variable names.
+
+Call Stack (most recent call first):
+  CMakeLists.txt:31 (find_package)
+
+
+-- Eigen found (include: /home/alg/ethz_mpc_ws/devel/include/eigen3)
+-- Marking SHARED_LIBRARY "mav_nonlinear_mpc_lib" of package "mav_nonlinear_mpc" for installation
+-- Marking EXECUTABLE "nonlinear_mpc_node" of package "mav_nonlinear_mpc" for installation
+-- Marking HEADER FILES in "include" folder of package "mav_nonlinear_mpc" for installation
+-- Marking SHARED CONTENT FOLDER "launch" of package "mav_nonlinear_mpc" for installation
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/alg/ethz_mpc_ws/src/mav_control_rw/mav_nonlinear_mpc/cmake-build-debug

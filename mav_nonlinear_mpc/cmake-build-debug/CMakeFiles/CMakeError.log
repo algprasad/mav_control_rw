@@ -1,0 +1,84 @@
+Determining if the function sgemm_ exists failed with the following output:
+Change Dir: /home/alg/ethz_mpc_ws/src/mav_control_rw/mav_nonlinear_mpc/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_f4d24/fast && /usr/bin/make -f CMakeFiles/cmTC_f4d24.dir/build.make CMakeFiles/cmTC_f4d24.dir/build
+make[1]: Entering directory '/home/alg/ethz_mpc_ws/src/mav_control_rw/mav_nonlinear_mpc/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_f4d24.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=sgemm_   -o CMakeFiles/cmTC_f4d24.dir/CheckFunctionExists.c.o   -c /home/alg/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/192.6817.32/bin/cmake/linux/share/cmake-3.15/Modules/CheckFunctionExists.c
+Linking C executable cmTC_f4d24
+/home/alg/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/192.6817.32/bin/cmake/linux/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f4d24.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=sgemm_    -rdynamic CMakeFiles/cmTC_f4d24.dir/CheckFunctionExists.c.o  -o cmTC_f4d24 
+CMakeFiles/cmTC_f4d24.dir/CheckFunctionExists.c.o: In function `main':
+CheckFunctionExists.c:(.text+0x10): undefined reference to `sgemm_'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_f4d24.dir/build.make:86: recipe for target 'cmTC_f4d24' failed
+make[1]: *** [cmTC_f4d24] Error 1
+make[1]: Leaving directory '/home/alg/ethz_mpc_ws/src/mav_control_rw/mav_nonlinear_mpc/cmake-build-debug/CMakeFiles/CMakeTmp'
+Makefile:121: recipe for target 'cmTC_f4d24/fast' failed
+make: *** [cmTC_f4d24/fast] Error 2
+
+
+
+Performing C SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
+Change Dir: /home/alg/ethz_mpc_ws/src/mav_control_rw/mav_nonlinear_mpc/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_fe51d/fast && /usr/bin/make -f CMakeFiles/cmTC_fe51d.dir/build.make CMakeFiles/cmTC_fe51d.dir/build
+make[1]: Entering directory '/home/alg/ethz_mpc_ws/src/mav_control_rw/mav_nonlinear_mpc/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_fe51d.dir/src.c.o
+/usr/bin/cc   -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_fe51d.dir/src.c.o   -c /home/alg/ethz_mpc_ws/src/mav_control_rw/mav_nonlinear_mpc/cmake-build-debug/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_fe51d
+/home/alg/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/192.6817.32/bin/cmake/linux/bin/cmake -E cmake_link_script CMakeFiles/cmTC_fe51d.dir/link.txt --verbose=1
+/usr/bin/cc  -DCMAKE_HAVE_LIBC_PTHREAD    -rdynamic CMakeFiles/cmTC_fe51d.dir/src.c.o  -o cmTC_fe51d 
+CMakeFiles/cmTC_fe51d.dir/src.c.o: In function `main':
+src.c:(.text+0x3c): undefined reference to `pthread_create'
+src.c:(.text+0x48): undefined reference to `pthread_detach'
+src.c:(.text+0x59): undefined reference to `pthread_join'
+src.c:(.text+0x6d): undefined reference to `pthread_atfork'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_fe51d.dir/build.make:86: recipe for target 'cmTC_fe51d' failed
+make[1]: *** [cmTC_fe51d] Error 1
+make[1]: Leaving directory '/home/alg/ethz_mpc_ws/src/mav_control_rw/mav_nonlinear_mpc/cmake-build-debug/CMakeFiles/CMakeTmp'
+Makefile:121: recipe for target 'cmTC_fe51d/fast' failed
+make: *** [cmTC_fe51d/fast] Error 2
+
+
+Source file was:
+#include <pthread.h>
+
+void* test_func(void* data)
+{
+  return data;
+}
+
+int main(void)
+{
+  pthread_t thread;
+  pthread_create(&thread, NULL, test_func, NULL);
+  pthread_detach(thread);
+  pthread_join(thread, NULL);
+  pthread_atfork(NULL, NULL, NULL);
+  pthread_exit(NULL);
+
+  return 0;
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/alg/ethz_mpc_ws/src/mav_control_rw/mav_nonlinear_mpc/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_28a19/fast && /usr/bin/make -f CMakeFiles/cmTC_28a19.dir/build.make CMakeFiles/cmTC_28a19.dir/build
+make[1]: Entering directory '/home/alg/ethz_mpc_ws/src/mav_control_rw/mav_nonlinear_mpc/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_28a19.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_28a19.dir/CheckFunctionExists.c.o   -c /home/alg/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/192.6817.32/bin/cmake/linux/share/cmake-3.15/Modules/CheckFunctionExists.c
+Linking C executable cmTC_28a19
+/home/alg/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/192.6817.32/bin/cmake/linux/bin/cmake -E cmake_link_script CMakeFiles/cmTC_28a19.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create    -rdynamic CMakeFiles/cmTC_28a19.dir/CheckFunctionExists.c.o  -o cmTC_28a19 -lpthreads 
+/usr/bin/ld: cannot find -lpthreads
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_28a19.dir/build.make:86: recipe for target 'cmTC_28a19' failed
+make[1]: *** [cmTC_28a19] Error 1
+make[1]: Leaving directory '/home/alg/ethz_mpc_ws/src/mav_control_rw/mav_nonlinear_mpc/cmake-build-debug/CMakeFiles/CMakeTmp'
+Makefile:121: recipe for target 'cmTC_28a19/fast' failed
+make: *** [cmTC_28a19/fast] Error 2
+
+
+

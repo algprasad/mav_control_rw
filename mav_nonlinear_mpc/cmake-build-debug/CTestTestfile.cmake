@@ -1,0 +1,7 @@
+# CMake generated Testfile for 
+# Source directory: /home/alg/ethz_mpc_ws/src/mav_control_rw/mav_nonlinear_mpc
+# Build directory: /home/alg/ethz_mpc_ws/src/mav_control_rw/mav_nonlinear_mpc/cmake-build-debug
+# 
+# This file includes the relevant testing commands required for 
+# testing this directory and lists subdirectories to be tested as well.
+subdirs("gtest")
