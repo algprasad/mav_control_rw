@@ -28,3 +28,7 @@
 *.settings*
 *.DS_Store
 *.idea*
+
+#cmake-build-debug folders
+mav_nonlinear_mpc/cmake-build-debug/
+alg_trajectory/cmake-build-debug/
