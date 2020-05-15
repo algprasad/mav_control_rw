@@ -39,6 +39,9 @@ int main( )
     Control pitch_ref;
     Control thrust;
 
+    //Adding the the control epsilon //TODO: Expand to multiple obstacles
+    Control epsilon;
+
     OnlineData roll_tau;
     OnlineData roll_gain;
     OnlineData pitch_tau;
@@ -48,6 +51,11 @@ int main( )
     OnlineData external_forces1;
     OnlineData external_forces2;
     OnlineData external_forces3;
+
+    //Adding the obstacle positions online
+    OnlineData Ox;
+    OnlineData Oy;
+    OnlineData Oz;
 
     // Non-linear drag
     IntermediateState dragacc1 =   sin(pitch)*linear_drag_coefficient1*thrust*velocity3
@@ -70,12 +78,16 @@ int main( )
     f << dot( position2 ) == velocity2;
     f << dot( position3 ) == velocity3;
 
+
     // Reference functions and weighting matrices:
     Function h;
     h << position1 << position2 << position3;
     h << velocity1 << velocity2 << velocity3;
     h << roll      << pitch;
     h << roll_ref  << pitch_ref << (cos(pitch)*cos(roll)*thrust - g);
+
+    ///adding the cost of epsilon^2 to the objective function
+    h << epsilon*epsilon;
 
     Function hN;
     hN << position1 << position2 << position3;
@@ -85,8 +97,12 @@ int main( )
     BMatrix W  = eye<bool>(h.getDim());
     BMatrix WN = eye<bool>(hN.getDim());
 
+
     // Define OCP problem:
     OCP ocp(0.0, N*Ts, N);
+
+    //Setting the number of OnlineData values because of bug in ACADO
+    ocp.setNOD(12);
 
     ocp.subjectTo(f);
 
@@ -97,6 +113,9 @@ int main( )
     ocp.subjectTo(-45*PI/180 <= roll_ref  <= 45*PI/180);
     ocp.subjectTo(-45*PI/180 <= pitch_ref <= 45*PI/180);
     ocp.subjectTo(     g/2.0 <= thrust    <= g*1.5);
+
+    // The obstacle avoidance constraint //TODO: Try the same with ellispoid obstacles
+    ocp.subjectTo(1 <= (((Ox -position1)*(Ox - position1)) + ((Oy - position2)*(Oy - position2)) + ((Oz - position3)*(Oz - position3))) + epsilon <=10000);
 
     // Export the code:
     OCPexport mpc( ocp );
