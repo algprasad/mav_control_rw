@@ -84,10 +84,11 @@ int main( )
     h << position1 << position2 << position3;
     h << velocity1 << velocity2 << velocity3;
     h << roll      << pitch;
-    h << roll_ref  << pitch_ref << (cos(pitch)*cos(roll)*thrust - g);
+    h << roll_ref  << pitch_ref << (cos(pitch)*cos(roll)*thrust - g)<<epsilon*epsilon;
 
-    ///adding the cost of epsilon^2 to the objective function
-    h << epsilon*epsilon;
+    ///adding the cost of epsilon^2 as a new cost function
+    Function epsilon_cost;
+    epsilon_cost << epsilon*epsilon;
 
     Function hN;
     hN << position1 << position2 << position3;
@@ -115,7 +116,7 @@ int main( )
     ocp.subjectTo(     g/2.0 <= thrust    <= g*1.5);
 
     // The obstacle avoidance constraint //TODO: Try the same with ellispoid obstacles
-    ocp.subjectTo(1 <= (((Ox -position1)*(Ox - position1)) + ((Oy - position2)*(Oy - position2)) + ((Oz - position3)*(Oz - position3))) + epsilon <=10000);
+    ocp.subjectTo(0.5 <= (((Ox -position1)*(Ox - position1))/0.5 + ((Oy - position2)*(Oy - position2))/0.5 + ((Oz - position3)*(Oz - position3))/1) + epsilon <=10000);
 
     // Export the code:
     OCPexport mpc( ocp );
@@ -127,7 +128,7 @@ int main( )
     //mpc.set( NUM_INTEGRATOR_STEPS, N);
     mpc.set( QP_SOLVER, QP_QPOASES);
     mpc.set( HOTSTART_QP, NO);
-    mpc.set( LEVENBERG_MARQUARDT, 1e-10);
+    mpc.set( LEVENBERG_MARQUARDT, 1e-10); //TODO: Maybe increase this a little  from 1e-10 to 0.01 --- > Didn't affect it.
     mpc.set( LINEAR_ALGEBRA_SOLVER, GAUSS_LU);
     mpc.set( IMPLICIT_INTEGRATOR_NUM_ITS, 2);
     mpc.set( CG_USE_OPENMP, YES);

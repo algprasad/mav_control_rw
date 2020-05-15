@@ -4,7 +4,7 @@
 #include <cmath>
 
 void generateTrajectoryMessage(trajectory_msgs::MultiDOFJointTrajectory& trajectory) {
-    unsigned int num_waypoints = 5;
+    unsigned int num_waypoints = 100;
 
 
 
@@ -16,8 +16,8 @@ void generateTrajectoryMessage(trajectory_msgs::MultiDOFJointTrajectory& traject
 
         //X, Y, Z coordinates of the positon of the first waypoint
         position.x = i;
-        position.y = i;
-        position.z = i;
+        position.y = 0;
+        position.z = 2 ;
 
         orientation.x = 0;
         orientation.y = 0;
@@ -103,8 +103,8 @@ int main(int argc, char **argv){
             trajectory_msgs::MultiDOFJointTrajectory traj_msg;
 
             //make the trajectory message
-            //generateTrajectoryMessage(traj_msg);
-            generateSineTrajectory(traj_msg);
+            generateTrajectoryMessage(traj_msg);
+            //generateSineTrajectory(traj_msg);
 
             //publish the message
             traj_pub.publish(traj_msg);

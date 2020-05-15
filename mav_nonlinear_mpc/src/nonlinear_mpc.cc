@@ -150,7 +150,7 @@ void NonlinearModelPredictiveControl::initializeParameters()
 
   for (int i = 0; i < ACADO_N + 1; i++) {
     acado_online_data_.block(i, 0, 1, ACADO_NOD) << roll_time_constant_, roll_gain_, pitch_time_constant_, pitch_gain_, drag_coefficients_(
-        0), drag_coefficients_(1), 0, 0, 0, 10, 0, 2;
+        0), drag_coefficients_(1), 0, 0, 0, 5, 0, 2;
   }
 
   Eigen::Map<Eigen::Matrix<double, ACADO_NOD, ACADO_N + 1>>(const_cast<double*>(acadoVariables.od)) =
@@ -166,13 +166,29 @@ void NonlinearModelPredictiveControl::initializeParameters()
 
 void NonlinearModelPredictiveControl::applyParameters()
 {
-  W_.block(0, 0, 3, 3) = q_position_.asDiagonal();
+  /*W_.block(0, 0, 3, 3) = q_position_.asDiagonal();
   W_.block(3, 3, 3, 3) = q_velocity_.asDiagonal();
   W_.block(6, 6, 2, 2) = q_attitude_.asDiagonal();
-  W_.block(8, 8, 3, 3) = r_command_.asDiagonal();
+  W_.block(8, 8, 3, 3) = r_command_.asDiagonal();*/
 
-  WN_ = solveCARE((Eigen::VectorXd(6) << q_position_, q_velocity_).finished().asDiagonal(),
-                  r_command_.asDiagonal());
+  //TODO: Change the weights here
+   Eigen::Vector3d position_weights(10, 10, 10);
+   Eigen::Vector3d velocity_weights(1, 1, 1);
+   Eigen::Vector2d attitude_weights(5000, 5000);
+   Eigen::Vector4d control_weights(10, 10, 10, 10);
+
+
+  W_.block(0, 0, 3, 3) = position_weights.asDiagonal();
+  W_.block(3, 3, 3, 3) = velocity_weights.asDiagonal();
+  W_.block(6, 6, 2, 2) = attitude_weights.asDiagonal();
+  W_.block(8, 8, 4, 4) = control_weights.asDiagonal();
+
+
+
+  /*WN_ = solveCARE((Eigen::VectorXd(6) << q_position_, q_velocity_).finished().asDiagonal(),
+                  r_command_.asDiagonal());*/
+    WN_ = solveCARE((Eigen::VectorXd(6) << position_weights, velocity_weights).finished().asDiagonal(),
+            control_weights.asDiagonal()); //TODO: source of error. Maybe keeps as r_command as
 
   Eigen::Map<Eigen::Matrix<double, ACADO_NY, ACADO_NY>>(const_cast<double*>(acadoVariables.W)) = W_
       .transpose();
@@ -180,16 +196,21 @@ void NonlinearModelPredictiveControl::applyParameters()
       WN_.transpose();
 
   for (size_t i = 0; i < ACADO_N; ++i) {
-    acadoVariables.lbValues[3 * i] = -roll_limit_;       // min roll
+      double PI = 3.1415926535897932;
+    /*acadoVariables.lbValues[3 * i] = -roll_limit_;       // min roll
     acadoVariables.lbValues[3 * i + 1] = -pitch_limit_;  // min pitch
-    acadoVariables.lbValues[3 * i + 2] = thrust_min_;    // min thrust
+    acadoVariables.lbValues[3 * i + 2] = thrust_min_;*/    // min thrust
     //Adding lower limits to distance to obstacles
-    acadoVariables.lbValues[3 * i + 3] = 1;              //min distance from the obstacle
+      acadoVariables.lbValues[3 * i] = -70*PI/180;       // min roll
+      acadoVariables.lbValues[3 * i + 1] = -70*PI/180; //pitch_limit_;  // min pitch
+      acadoVariables.lbValues[3 * i + 2] = thrust_min_;    // min thrust
 
-    acadoVariables.ubValues[3 * i] = roll_limit_;        // max roll
-    acadoVariables.ubValues[3 * i + 1] = pitch_limit_;   // max pitch
-    acadoVariables.ubValues[3 * i + 2] = thrust_max_;    // max thrust
-      acadoVariables.ubValues[3 * i + 3] = 10000;        //max distance from the obstacle
+    //acadoVariables.lbValues[3 * i + 3] = 1;              //min distance from the obstacle
+
+    acadoVariables.ubValues[3 * i] = 70*PI/180; //roll_limit_;        // max roll
+    acadoVariables.ubValues[3 * i + 1] = 70*PI/180; //pitch_limit_;   // max pitch
+    acadoVariables.ubValues[3 * i + 2] = thrust_max_*1.5;    // max thrust
+      //acadoVariables.ubValues[3 * i + 3] = 10000;        //max distance from the obstacle
   }
 
   if (verbose_) {
@@ -384,7 +405,7 @@ void NonlinearModelPredictiveControl::calculateRollPitchYawrateThrustCommand(
   ///Checking the value of epsilon
   double epsilon = acadoVariables.u[3];
   std::cout<<"EPSILON: "<<epsilon<<std::endl;
-  std::cout<<"Position: "<<x_0<<std::endl;
+  //std::cout<<"Position: "<<x_0<<std::endl;
 
   if (std::isnan(roll_ref) || std::isnan(pitch_ref) || std::isnan(thrust_ref)
       || acado_status != 0) {
@@ -399,7 +420,7 @@ void NonlinearModelPredictiveControl::calculateRollPitchYawrateThrustCommand(
 
   state_ = Eigen::Map<Eigen::Matrix<double, ACADO_N + 1, ACADO_NX, Eigen::RowMajor>>(
       acadoVariables.x);
-  std::cout<<state_<<std::endl;
+  //std::cout<<state_<<std::endl;
 
 
   // yaw controller
